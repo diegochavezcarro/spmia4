@@ -1,17 +1,25 @@
-version: '2'
+version: '3'
 services:
   eurekaserver:
      image:   diegochavezcarro/tmx-eurekasvr:chapter4
+     deploy:
+        replicas: 1
      ports:
        - "8761:8761"
+     networks:
+       - webnet
   configserver:
       image: diegochavezcarro/tmx-confsvr:chapter4
+      deploy:
+        replicas: 1
       ports:
          - "8888:8888"
       environment:
          EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
          EUREKASERVER_PORT: "8761"
          ENCRYPT_KEY:       "IMSYMMETRIC"
+      networks:
+        - webnet
   # configserver2:
   #     image: johncarnell/tmx-confsvr:chapter4
   #     ports:
@@ -24,14 +32,20 @@ services:
   #       ENCRYPT_KEY:       "IMSYMMETRIC"
   database:
       image: postgres:9.5
+      deploy:
+        replicas: 1
       ports:
       - "5432:5432"
       environment:
         - POSTGRES_USER=postgres
         - POSTGRES_PASSWORD=p0stgr@s
         - POSTGRES_DB=eagle_eye_local
+      networks:
+        - webnet
   licensingservice:
       image: diegochavezcarro/tmx-licensing-service:chapter4
+      deploy:
+        replicas: 1
       ports:
         - "8080:8080"
       environment:
@@ -43,8 +57,12 @@ services:
         CONFIGSERVER_PORT:   "8888"
         DATABASESERVER_PORT: "5432"
         ENCRYPT_KEY:       "IMSYMMETRIC"
+      networks:
+        - webnet
   organizationservice:
       image: diegochavezcarro/tmx-organization-service:chapter4
+      deploy:
+        replicas: 4
       ports:
         - "8085:8085"
       environment:
@@ -56,16 +74,20 @@ services:
         CONFIGSERVER_PORT:   "8888"
         DATABASESERVER_PORT: "5432"
         ENCRYPT_KEY:       "IMSYMMETRIC"
-  organizationservice2:
-      image: diegochavezcarro/tmx-organization-service:chapter4
-      ports:
-        - "8086:8086"
-      environment:
-        PROFILE: "default"
-        SERVER_PORT: "8085"
-        CONFIGSERVER_URI: "http://configserver:8888"
-        EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
-        EUREKASERVER_PORT:   "8761"
-        CONFIGSERVER_PORT:   "8888"
-        DATABASESERVER_PORT: "5432"
-        ENCRYPT_KEY:       "IMSYMMETRIC"
+      networks:
+        - webnet
+#  organizationservice2:
+#      image: diegochavezcarro/tmx-organization-service:chapter4
+#      ports:
+#        - "8086:8086"
+#      environment:
+#        PROFILE: "default"
+#        SERVER_PORT: "8086"
+#        CONFIGSERVER_URI: "http://configserver:8888"
+#        EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
+#        EUREKASERVER_PORT:   "8761"
+#        CONFIGSERVER_PORT:   "8888"
+#        DATABASESERVER_PORT: "5432"
+#        ENCRYPT_KEY:       "IMSYMMETRIC"
+networks:
+  webnet:
