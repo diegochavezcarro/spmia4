@@ -7,3 +7,7 @@ spring:
   cloud:
     config:
       enabled: true
+    inetutils:
+      preferredNetworks:
+        - 192.168
+        - 10.0
