@@ -1,7 +1,6 @@
 eureka:
   instance:
-    hostname: licensingservice
-    preferIpAddress: false
+    preferIpAddress: true
   client:
     registerWithEureka: true
     fetchRegistry: true
