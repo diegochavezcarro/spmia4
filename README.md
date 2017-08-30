@@ -1,3 +1,25 @@
+#If you need modifications (in your own repo) follow the next example steps:
+1. Enter the right directory 
+cd /c/repos/GitHub/spmia7
+2. Generate build and Create Docker images
+mvn clean package docker:build
+3. Show created images:
+docker images
+4. If you want to push them to your docker hub (they would be on local docker hub instead):
+docker push diegochavezcarro/tmx-zuulsvr:chapter7
+docker push diegochavezcarro/tmx-specialroutes-service:chapter7
+docker push diegochavezcarro/tmx-eurekasvr:chapter7
+docker push diegochavezcarro/tmx-orgservice-new:chapter7
+docker push diegochavezcarro/tmx-organization-service:chapter7
+docker push diegochavezcarro/tmx-licensing-service:chapter7
+docker push diegochavezcarro/tmx-confsvr:chapter7
+docker push diegochavezcarro/tmx-authentication-service:chapter7
+
+5. deploy containers using docker compose:
+docker-compose -f docker/common/docker-compose.yml up
+
+
+
 # Introduction
 Welcome to Spring Microservices in Action, Chapter 4.  Chapter 4 builds on the material from Chapter 3 and introduces the concept of service registration and discovery patterns using Spring Cloud and Netflix's Eureka server.  Using service discovery, you will be able to add and remove service instances without the clients having to know the physical locations of the service.
 
